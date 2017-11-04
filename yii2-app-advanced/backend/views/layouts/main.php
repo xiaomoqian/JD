@@ -29,17 +29,36 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
+//        'brandLabel' => Yii::$app->name,
+        'brandLabel' => 'bootstrap链接',
+//        'brandUrl' => Yii::$app->homeUrl,
+        'brandUrl' => "http://v3.bootcss.com/components/",
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => '首页', 'url' => ['/test/index']],
+        [
+                'label'=>'品牌管理',
+                'items'=>[
+                        ['label'=>'品牌列表','url'=>['brand/index']],
+                         ['label'=>'添加品牌','url'=>['brand/add']],
+                         ['label'=>'回收站','url'=>['brand/yin']],
+                ]
+        ],
+        [
+        'label'=>'文章管理',
+        'items'=>[
+            ['label'=>'文章列表','url'=>['article/index']],
+            ['label'=>'添加文章','url'=>['article/add']],
+            ['label'=>'文章分类','url'=>['article/gory']],
+            ['label'=>'添加分类','url'=>['article/ga']],
+        ]
+    ]
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => '用户登录', 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
