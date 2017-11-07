@@ -97,7 +97,6 @@ class ArticleController extends \yii\web\Controller
              //文章内容添加
                 if($detail->load($request->post())){
                    if($model->validate() && $detail->validate()){
-
                        $model->save();
                        $detail->detail_id=$model->id;
                        $detail->save();

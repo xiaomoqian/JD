@@ -40,13 +40,25 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => '首页', 'url' => ['/test/index']],
         [
-                'label'=>'品牌管理',
-                'items'=>[
-                        ['label'=>'品牌列表','url'=>['brand/index']],
-                         ['label'=>'添加品牌','url'=>['brand/add']],
-                         ['label'=>'回收站','url'=>['brand/yin']],
-                ]
+            'label'=>'商品管理',
+            'items'=>[
+                ['label'=>'商品列表','url'=>['goods/index']],
+                ['label'=>'添加商品','url'=>['goods/add']],
+                ['label'=>'分类列表','url'=>['goods-category/index']],
+                ['label'=>'添加分类','url'=>['goods-category/add']],
+                ['label'=>'品牌列表','url'=>['brand/index']],
+                ['label'=>'添加品牌','url'=>['brand/add']],
+                ['label'=>'品牌回收站','url'=>['brand/yin']],
+            ]
         ],
+//        [
+//                'label'=>'品牌管理',
+//                'items'=>[
+//                        ['label'=>'品牌列表','url'=>['brand/index']],
+//                         ['label'=>'添加品牌','url'=>['brand/add']],
+//                         ['label'=>'回收站','url'=>['brand/yin']],
+//                ]
+//        ],
         [
         'label'=>'文章管理',
         'items'=>[
@@ -55,7 +67,8 @@ AppAsset::register($this);
             ['label'=>'文章分类','url'=>['article/gory']],
             ['label'=>'添加分类','url'=>['article/ga']],
         ]
-    ]
+    ],
+
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => '用户登录', 'url' => ['/site/login']];

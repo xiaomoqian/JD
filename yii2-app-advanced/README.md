@@ -66,3 +66,68 @@
 1. 列表用下拉框层级显示
 2. 使用插件，提高用户体验
 3. 在老文的网址上下载ztree插件
+
+## 3.商品管理
+
+### 需求
+商品管理模块涉及商品的列表展示、商品分类、商品添加、修改、删除功能，
+数据连表查询，增加，删除与修改
+```php
+        createTable('goos', [
+            'id' => $this->primaryKey(),
+            'name'=>$this->string()->comment("商品名称"),
+            'cate_id'=>$this->smallInteger()->comment("分类ID"),
+            'brand_id'=>$this->smallInteger()->comment("品牌ID"),
+            'sn'=>$this->smallInteger()->comment("商品货号"),
+            'logo'=>$this->string()->comment("商品图片"),
+            'status'=>$this->smallInteger()->comment("商品状态"),
+            'sale'=>$this->smallInteger()->comment("是否上架"),
+            'stock'=>$this->smallInteger()->comment("库存"),
+            'shop_price'=>$this->decimal(10,2)->comment("上架价格"),
+            'stock_price'=>$this->decimal(10,2)->comment("进货价格")
+        ]);
+        
+        createTable('goods_details', [
+                    'id' => $this->primaryKey(),
+                    'goods_id'=>$this->smallInteger()->comment("商品ID"),
+                    'details'=>$this->text()->comment("商品详情"),
+                ]);
+                
+          createTable('goods_img', [
+                      'id' => $this->primaryKey(),
+                      'goobs_id'=>$this->smallInteger()->comment("商品ID"),
+                      'name'=>$this->string()->comment("相册"),
+                  ]);
+            createTable('goods_day_count', [
+                        'id' => $this->primaryKey(),
+                        'day'=>$this->date()->comment("日期"),
+                        'count'=>$this->string()->comment("总数")
+                    ]);
+```
+### 流程
+设计数据库、创建模型、创建控制器、创建视图、填写代码、调试bug
+### 设计要点
+通过全球基佬聚集地(github)下载插件，下载富文本插件
+### 要点难点及解决方案
+1. 多文件回显与修改后删除七牛云的图片与数据库的图片
+2. 使用插件，提高用户体验
+3. 表与表之间的关系
+4.  统计每天创建商品次数，到一个新的数据表中
+5. 删除连表数据时候，如果数据库没有数据会出现问题
+```php
+ $del=Goos::findOne($id);
+        $img=GoosImg::find()->where(['goobs_id'=>$id])->all();
+        $details=GoosDetails::findOne(['goods_id'=>$id]);
+         if($del){
+             if($img){
+                 foreach ($img as $k){
+                     $k->delete();
+                 }
+             }
+             if($details){
+                 $details->delete();
+             }
+             $del->delete();
+             \Yii::$app->session->setFlash('success','删除成功');
+             return $this->redirect(['index']);
+```

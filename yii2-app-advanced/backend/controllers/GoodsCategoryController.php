@@ -72,8 +72,9 @@ class GoodsCategoryController extends \yii\web\Controller
                     //判断是不是父节点ID
                     if($model->parent_id=="0"){
                         //保存父节点
-                        $model->MakeRoot();
+                        $model->save();
                         \Yii::$app->session->setFlash('success','添加成功');
+                        return $this->redirect(['index']);
                     }else{
                         //保存子节点
                         $parent=GoodsCategory::findOne(['id'=>$model->parent_id]);

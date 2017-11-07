@@ -25,4 +25,13 @@ echo  \liyuze\ztree\ZTree::widget([
 echo $form->field($model,'intro')->textarea();
 echo \yii\bootstrap\Html::submitButton("提交",['class'=>'btn btn-success']);
 \yii\bootstrap\ActiveForm::end();
+$js=<<<EOF
+var treeObj = $.fn.zTree.getZTreeObj("w1");
+    treeObj.expandAll(true);
+    var node = treeObj.getNodeByParam("id", "{$model->parent_id}", null);
+    treeObj.selectNode(node);
+EOF;
+
+
+$this->registerJs($js);
 ?>
