@@ -51,6 +51,7 @@ AppAsset::register($this);
                 ['label'=>'品牌回收站','url'=>['brand/yin']],
             ]
         ],
+
 //        [
 //                'label'=>'品牌管理',
 //                'items'=>[
@@ -68,10 +69,18 @@ AppAsset::register($this);
             ['label'=>'添加分类','url'=>['article/ga']],
         ]
     ],
-
+        [
+            'label'=>'用户管理',
+            'items'=>[
+                ['label'=>'用户列表','url'=>['admin/admin']],
+                ['label'=>'用户注册','url'=>['admin/add']],
+                ['label'=>'用户登录','url'=>['admin/index']],
+            ]
+        ],
+        ['label' => '退出登录', 'url' => ['admin/login-out']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => '用户登录', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => 'login', 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')

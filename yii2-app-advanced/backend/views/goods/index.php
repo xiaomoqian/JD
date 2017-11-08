@@ -1,4 +1,23 @@
-<a href="add" class="btn btn-success">添加商品</a>
+<div>
+    <div style="float: left"><a href="add" class="btn btn-success">添加商品</a></div>
+
+<div style="float: right">
+    <?php
+    $form=\yii\bootstrap\ActiveForm::begin([
+        'method'=>'get',
+        'options' => ['class'=>"form-inline pull-right"]
+    ]);
+       echo $form->field($model,'min')->label(false)->textInput(['placeholder'=>'最小金额','size'=>5]);
+       echo "-";
+       echo $form->field($model,'max')->label(false)->textInput(['placeholder'=>'最大金额','size'=>5]);
+       echo " ";
+       echo $form->field($model,'key')->label(false)->textInput(['placeholder'=>'输入名称或者货号']);
+       echo \yii\bootstrap\Html::submitButton("<span class='glyphicon glyphicon-search'>搜索</span>",['class'=>'btn','style'=>'margin-bottom:8px']);
+
+    \yii\bootstrap\ActiveForm::end();
+    ?>
+</div>
+</div>
 <table class="table" style="text-align: center">
     <tr>
         <th style="text-align: center">商品ID</th>

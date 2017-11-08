@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Brand;
 use backend\models\GoodsCategory;
 use backend\models\GoodsDayCount;
+use backend\models\GoodsForm;
 use backend\models\Goos;
 use backend\models\GoosImg;
 use backend\models\GoosDetails;
@@ -18,6 +19,14 @@ class GoodsController extends \yii\web\Controller
     /*
      * 富文本编辑框
      */
+    public function actions()
+    {
+        return [
+            'upload' => [
+                'class' => 'kucha\ueditor\UEditorAction',
+            ]
+        ];
+    }
     /*
       * 图片上传
       */
@@ -47,15 +56,38 @@ class GoodsController extends \yii\web\Controller
      */
     public function actionIndex()
     {
+        /*
+         * 设置搜索
+         */
+        $query = Goos::find();
+        $request=\Yii::$app->request;
+        //名称搜索  状态搜索
+        $max=isset($request->get()['GoodsForm']['max'])?$request->get()['GoodsForm']['max']:"";
+        $min=isset($request->get()['GoodsForm']['min'])?$request->get()['GoodsForm']['min']:"";
+        $key=isset($request->get()['GoodsForm']['key'])?$request->get()['GoodsForm']['key']:"";
+        /*
+         * 拼接查询条件
+         */
+         if($max>0){
+             $query->andWhere("shop_price <= {$max}");
+         }
+         if($min>0){
+             $query->andWhere("shop_price >= {$min}");
+         }
+         if(isset($key)){
+             $query->andWhere("name like '%{$key}%' or sn like '%{$key}%'");
+         }
+
         //设置分页
-        $count=Goos::find()->count();
+        $count=$query->count();
         $pageSize=3;
         $page=new Pagination([
             'pageSize'=>$pageSize,
             'totalCount'=>$count
         ]);
-        $goods=Goos::find()->orderBy("id desc")->limit($page->limit)->offset($page->offset)->all();
-        return $this->render('index',['goods'=>$goods,'page'=>$page]);
+        $model=new GoodsForm();
+        $goods=$query->orderBy("id desc")->limit($page->limit)->offset($page->offset)->all();
+        return $this->render('index',['goods'=>$goods,'page'=>$page,'model'=>$model]);
     }
     /*
      * 商品详情列表
@@ -98,7 +130,7 @@ class GoodsController extends \yii\web\Controller
                      }
                      //每天建表统计
                      $s = date("Ymd");
-                     if (!GoodsDayCount::find(['day' => $s])->count()) {
+                     if (!GoodsDayCount::find()->where(['day' => $s])->count()) {
                          $day->day = date("Ymd");
                      } else {
                          $day = GoodsDayCount::findOne(['day' => $s]);
@@ -151,6 +183,7 @@ class GoodsController extends \yii\web\Controller
                     $imgs=GoosImg::find()->where(['goobs_id'=>$id])->all();
                     foreach ($imgs as $k){
                         $k->delete();
+                        @unlink($img);
                     }
                     //多文件保存
                     foreach ($ss as $k => $v) {
