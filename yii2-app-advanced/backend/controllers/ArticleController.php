@@ -13,6 +13,17 @@ use yii\helpers\ArrayHelper;
 class ArticleController extends \yii\web\Controller
 {
     /*
+     * 富文本
+     */
+//    public function actions()
+//    {
+//        return [
+//            'upload' => [
+//                'class' => 'kucha\ueditor\UEditorAction',
+//            ]
+//        ];
+//    }
+    /*
      * 查询分类
      */
     public function actionGory()

@@ -16,10 +16,12 @@ class GoodsForm extends Model
    public $key;
    public $min;
    public $max;
+   public $status;
+   public static $s=[''=>'选择状态','0'=>'隐藏','1'=>'显示'];
    public function rules(){
        return [
-           [['min','max'],'number'],
-           [['key'],'safe']
+           [['min','max'],'number','message' => ''],
+           [['key','status'],'safe']
        ];
    }
 }

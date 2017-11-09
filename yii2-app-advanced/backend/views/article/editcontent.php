@@ -8,7 +8,8 @@
           <?php
                 $form=\yii\bootstrap\ActiveForm::begin();
                 echo $form->field($content,'detail_id')->hiddenInput();
-                echo $form->field($content,'content')->textarea();
+//                echo $form->field($content,'content')->textarea();
+          echo $form->field($content, 'content')->widget(\yuncms\ueditor\UEditor::className(),[]);
                 echo \yii\bootstrap\Html::submitButton('提交',['class'=>"btn btn-success"]);
                 \yii\bootstrap\ActiveForm::end();
           ?>

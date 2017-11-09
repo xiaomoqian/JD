@@ -5,9 +5,12 @@
     <?php
     $form=\yii\bootstrap\ActiveForm::begin([
         'method'=>'get',
+        'action' => 'index',
         'options' => ['class'=>"form-inline pull-right"]
     ]);
-       echo $form->field($model,'min')->label(false)->textInput(['placeholder'=>'最小金额','size'=>5]);
+        echo $form->field($model,'status')->label(false)->dropDownList(\backend\models\GoodsForm::$s);
+    echo " ";
+        echo $form->field($model,'min')->label(false)->textInput(['placeholder'=>'最小金额','size'=>5]);
        echo "-";
        echo $form->field($model,'max')->label(false)->textInput(['placeholder'=>'最大金额','size'=>5]);
        echo " ";

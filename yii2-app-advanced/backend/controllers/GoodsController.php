@@ -14,19 +14,20 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\data\Pagination;
 
+
 class GoodsController extends \yii\web\Controller
 {
     /*
      * 富文本编辑框
      */
-    public function actions()
-    {
-        return [
-            'upload' => [
-                'class' => 'kucha\ueditor\UEditorAction',
-            ]
-        ];
-    }
+//    public function actions()
+//    {
+//        return [
+//            'upload' => [
+//                'class' => 'kucha\ueditor\UEditorAction',
+//            ]
+//        ];
+//    }
     /*
       * 图片上传
       */
@@ -65,6 +66,7 @@ class GoodsController extends \yii\web\Controller
         $max=isset($request->get()['GoodsForm']['max'])?$request->get()['GoodsForm']['max']:"";
         $min=isset($request->get()['GoodsForm']['min'])?$request->get()['GoodsForm']['min']:"";
         $key=isset($request->get()['GoodsForm']['key'])?$request->get()['GoodsForm']['key']:"";
+        $status=isset($request->get()['GoodsForm']['status'])?$request->get()['GoodsForm']['status']:"";
         /*
          * 拼接查询条件
          */
@@ -77,7 +79,9 @@ class GoodsController extends \yii\web\Controller
          if(isset($key)){
              $query->andWhere("name like '%{$key}%' or sn like '%{$key}%'");
          }
-
+         if($status==="1" || $status==="0"){
+             $query->andWhere("status={$status}");
+         }
         //设置分页
         $count=$query->count();
         $pageSize=3;
@@ -146,15 +150,15 @@ class GoodsController extends \yii\web\Controller
              }
          }
          //商品分类
-         $cates=GoodsCategory::find()->asArray()->all();
-         $cate=Json::encode($cates);
+         $cates=GoodsCategory::find()->orderBy('tree,lft')->all();
+         $catesArray=ArrayHelper::map($cates,'id','name');
          //商品品牌
          $brand=Brand::find()->all();
          $arrbrand=ArrayHelper::map($brand,'id','name');
          $model->stock=0;
          $model->status=1;
          $model->sale=1;
-         return $this->render("add",['model'=>$model,'arrbrand'=>$arrbrand,'cates'=>$cate,'detail'=>$detail,'img'=>$imgs]);
+         return $this->render("add",['model'=>$model,'arrbrand'=>$arrbrand,'cates'=>$catesArray,'detail'=>$detail,'img'=>$imgs]);
      }
     /*
     * 商品修改
@@ -202,15 +206,16 @@ class GoodsController extends \yii\web\Controller
             }
         }
         //商品分类
-        $cates=GoodsCategory::find()->asArray()->all();
-        $cate=Json::encode($cates);
+        //商品分类
+        $cates=GoodsCategory::find()->orderBy('tree,lft')->all();
+        $catesArray=ArrayHelper::map($cates,'id','name');
         //商品品牌
         $brand=Brand::find()->all();
         $arrbrand=ArrayHelper::map($brand,'id','name');
          foreach ($imgs as $img){
            $model->imgFile[]=$img->img;
          }
-        return $this->render("add",['model'=>$model,'arrbrand'=>$arrbrand,'cates'=>$cate,'detail'=>$detail]);
+        return $this->render("add",['model'=>$model,'arrbrand'=>$arrbrand,'cates'=>$catesArray,'detail'=>$detail]);
     }
     /*
      * 商品删除
@@ -255,4 +260,5 @@ class GoodsController extends \yii\web\Controller
         }
         return $this->render('details', ['edit' => $details]);
     }
+
 }

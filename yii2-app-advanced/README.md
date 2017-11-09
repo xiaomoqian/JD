@@ -132,3 +132,59 @@
              \Yii::$app->session->setFlash('success','删除成功');
              return $this->redirect(['index']);
 ```
+## 管理员模块
+### 需求
+管理员功能涉及管理员的增删改查。管理员登录、增加功能，数据库添加最后登录地址
+自动登录令牌
+### 流程
+ 设计数据库、创建模型、创建控制器、创建视图、填写代码、调试bug 
+```php
+createTable('admin', [
+            'id' => $this->primaryKey(),
+            'username'=>$this->string()->notNull()->defaultValue("游客")->comment("用户账号"),
+            'password'=>$this->string()->notNull()->comment("用户密码"),
+            'email'=>$this->string()->notNull()->comment("用户邮箱"),
+            'token'=>$this->string()->comment("自动登录"),
+            'create_at'=>$this->string()->comment("注册时间"),
+            'update_at'=>$this->string()->comment("最后登录时间"),
+            'login_ip'=>$this->string()->comment("最后登录地点")
+        ]);
+```
+### 设计要点 
+ 自动登录，给密码加密加盐，安全存入数据库（数据库和页面交互）
+ ### 要点难点及解决方案
+ 自动登录,提示当前登录用户下次登录时自动登录
+ ```php
+   public function actionIndex()
+     {
+         $model=new Admin();
+         $request=\Yii::$app->request;
+         if($request->isPost){
+             $re=$request->post();
+             //验证用户是否存在
+             $admin=Admin::findOne(['username'=>$re['Admin']['username']]);
+             if($admin){
+                 //验证密码是否正确
+                 if(\Yii::$app->security->validatePassword($re['Admin']['password'],$admin->password)){
+                     $admin->token=\Yii::$app->security->generateRandomString();
+                     $admin->update_at=time();
+                     $admin->login_ip=\Yii::$app->request->getUserIP();
+                     $admin->save();
+                     if(!$re['Admin']['rememberMe']){
+                         \Yii::$app->user->login($admin);
+                     }else{
+                         \Yii::$app->user->login($admin,3600*24*7);
+                     }
+                     return $this->redirect(['admin']);
+                 }else{
+                     $model->addError('password','密码错误');
+                 }
+             }else{
+                 $model->addError('username','用户名不存在');
+             }
+ 
+         }
+         return $this->render("login",['model'=>$model]);
+     }
+ ```
+ 

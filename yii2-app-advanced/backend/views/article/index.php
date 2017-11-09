@@ -1,4 +1,5 @@
 <div align="center"><h1>文章列表</h1></div>
+<?php echo \yii\bootstrap\Html::a("添加文章",['add'],['class'=>'btn btn-primary'])." "?>
 <table class="table" style="text-align: center">
     <tr>
         <th style="text-align: center">文章名称</th>

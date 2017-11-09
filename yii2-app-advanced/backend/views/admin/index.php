@@ -1,4 +1,4 @@
-<?=\yii\bootstrap\Html::a("用户注册",['add'],['class'=>'btn btn-success'])?>
+<?=\yii\bootstrap\Html::a("管理员注册",['add'],['class'=>'btn btn-success'])?>
 <table class="table" style="text-align: center">
     <tr>
         <th style="text-align: center">用户ID</th>

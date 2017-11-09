@@ -44,6 +44,7 @@
 <!--        品牌显示-->
     <?php }else{ //显示品牌?>
 <div align="center"><h1>品牌列表</h1></div>
+    <?php echo \yii\bootstrap\Html::a("添加品牌",['add'],['class'=>'btn btn-primary'])." "?>
     <div style="float: right;">
     <?php echo \yii\bootstrap\Html::a("一键删除",['onekey'],['class'=>'btn btn-primary'])." "?>
     </div>

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\Admin;
 use yii\data\Pagination;
+use yii\helpers\Url;
 
 class AdminController extends \yii\web\Controller
 {
@@ -18,19 +19,24 @@ class AdminController extends \yii\web\Controller
             $re=$request->post();
             //验证用户是否存在
             $admin=Admin::findOne(['username'=>$re['Admin']['username']]);
-            if(!$admin){
-                echo "<script>alert('用户不存在！')</script>";
-            }
-            //验证密码是否正确
-            if(\Yii::$app->security->validatePassword($re['Admin']['password'],$admin->password)){
-                $admin->token=\Yii::$app->security->generateRandomString();
-                $admin->update_at=time();
-                $admin->login_ip=\Yii::$app->request->getUserIP();
-                $admin->save();
-                \Yii::$app->user->login($admin,3600*24*30);
-                return $this->redirect(['admin']);
+            if($admin){
+                //验证密码是否正确
+                if(\Yii::$app->security->validatePassword($re['Admin']['password'],$admin->password)){
+                    $admin->token=\Yii::$app->security->generateRandomString();
+                    $admin->update_at=time();
+                    $admin->login_ip=\Yii::$app->request->getUserIP();
+                    $admin->save();
+                    if(!$re['Admin']['rememberMe']){
+                        \Yii::$app->user->login($admin);
+                    }else{
+                        \Yii::$app->user->login($admin,3600*24*7);
+                    }
+                    return $this->redirect(['admin']);
+                }else{
+                    $model->addError('password','密码错误');
+                }
             }else{
-                echo "<script>alert('密码错误！')</script>";
+                $model->addError('username','用户名不存在');
             }
 
         }
@@ -41,8 +47,7 @@ class AdminController extends \yii\web\Controller
      */
     public function actionLoginOut()
     {
-        $admin=Admin::findOne(2);
-        \Yii::$app->user->logout($admin);
+        \Yii::$app->user->logout();
         return $this->redirect(['index']);
     }
 
@@ -112,4 +117,5 @@ class AdminController extends \yii\web\Controller
             echo "<script>alert('删除失败')</script>";
         }
     }
+
 }

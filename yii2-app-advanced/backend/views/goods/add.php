@@ -3,28 +3,7 @@ $form=\yii\bootstrap\ActiveForm::begin();
 echo $form->field($model,"name")->textInput(['placeholder'=>"商品名称"]);
 echo $form->field($model,'sn')->textInput(['placeholder'=>'商品货号']);
 echo $form->field($model,'brand_id')->dropDownList($arrbrand);
-
-//商品分类
-echo $form->field($model,'cate_id')->hiddenInput();
-
-echo  \liyuze\ztree\ZTree::widget([
-    'setting' => '{
-          callback:{
-              onClick:function(event, treeId, treeNode){
-                 $("#goos-cate_id").val(treeNode.id);
-              }
-          },
-			data: {
-				simpleData: {
-					enable: true,
-                  idKey: "id",
-                  pIdKey: "parent_id",
-                  rootPId: 0
-				}
-			}
-		}',
-    'nodes' => $cates,
-]);
+echo $form->field($model,'cate_id')->dropDownList($cates);
 echo $form->field($model,'logo')->widget('manks\FileInput',[]);
 
 echo $form->field($model,'status')->inline()->radioList(\backend\models\Goos::$status);

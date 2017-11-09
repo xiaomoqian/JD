@@ -25,6 +25,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
+    public $rememberMe;
     public static function tableName()
     {
         return 'admin';
@@ -40,7 +41,8 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
             [['create_at', 'update_at'], 'integer'],
             [['username', 'password', 'email', 'token', 'login_ip'], 'string', 'max' => 255],
             [['salt'], 'string', 'max' => 6],
-            [['email'],'email']
+            [['email'],'email'],
+            [['rememberMe'],'safe']
         ];
     }
 
@@ -59,6 +61,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
             'create_at' => '注册时间',
             'update_at' => '最后登录时间',
             'login_ip' => '最后登录地点',
+            'rememberMe'=>'自动登录',
         ];
     }
     //注入系统内置时间行为
