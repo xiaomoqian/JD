@@ -35,7 +35,7 @@
                     [
                         'label'=>'商品管理',
                          'icon' => 'truck',
-                        'items'=>[
+                         'items'=>[
                             ['label'=>'商品列表','icon' => 'imdb','url'=>['goods/index']],
 //                            ['label'=>'添加商品','url'=>['goods/add']],
                             ['label'=>'分类列表','icon' => 'window-restore','url'=>['goods-category/index']],
@@ -62,8 +62,16 @@
                         'icon' => 'users',
                         'items'=>[
                             ['label'=>'管理员列表','icon' => 'user-o','url'=>['admin/admin']],
-                            ['label'=>'管理员注册','icon' => 'user-plus','url'=>['admin/add']],
+//                            ['label'=>'管理员注册','icon' => 'user-plus','url'=>['admin/add']],
                             ['label'=>'切换用户','icon' => 'reply-all','url'=>['admin/index']],
+                        ]
+                    ],
+                    [
+                        'label'=>'权限管理',
+                        'icon' => 'expeditedssl',
+                        'items'=>[
+                            ['label'=>'权限列表','icon' => 'exclamation-circle','url'=>['auth-item/index']],
+                            ['label'=>'角色列表','icon' => 'user-o','url'=>['auth-rule/index']],
                         ]
                     ],
                     //项目完成，干掉

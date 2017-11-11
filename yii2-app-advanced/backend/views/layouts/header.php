@@ -152,7 +152,7 @@ use yii\helpers\Html;
 
 
                     <!--退出登录-->
-<!--                    <a href="--><?php //echo  \yii\helpers\Url::to(['admin/login-out'])?><!--" class="btn btn-primary">退出登录</a>-->
+                    <a href="<?php echo  \yii\helpers\Url::to(['login/out'])?>" class="btn btn-primary">退出登录</a>
                     <ul class="dropdown-menu">
                         <li class="header">You have 9 tasks</li>
                         <li>
@@ -229,12 +229,12 @@ use yii\helpers\Html;
                         </li>
                     </ul>
                 </li>
-                <!-- User Account: style can be found in dropdown.less -->
+                <!-- User Account: style can be found in dropdown.less-->
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src=<?=Yii::getAlias("@web")?>"/upload/brand/1509702857.jpg" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs"><?php echo  isset(Yii::$app->user->identity->username)?Yii::$app->user->identity->username:'游客'?></span>
+                        <span class="hidden-xs"><?php echo  isset(Yii::$app->user->identity->username)?Yii::$app->user->identity->username:'游客' ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -267,7 +267,7 @@ use yii\helpers\Html;
                             <div class="pull-right">
                                 <?= Html::a(
                                     '退出登录',
-                                    ['admin/login-out'],
+                                    ['login/out'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>
                             </div>

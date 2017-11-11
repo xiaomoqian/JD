@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\Admin;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 class AdminController extends \yii\web\Controller
@@ -70,6 +71,8 @@ class AdminController extends \yii\web\Controller
      */
     public function actionAdd(){
         $model=new Admin();
+        //实例化rabc对象
+        $auth=\Yii::$app->authManager;
         $request=\Yii::$app->request;
         if($request->isPost){
             //数据绑定
@@ -77,12 +80,24 @@ class AdminController extends \yii\web\Controller
                 $model->password=\Yii::$app->security->generatePasswordHash($model->password);
                if($model->validate()){
                    $model->save();
+                   if($model->role){
+                       //循环找到角色
+                       foreach ($model->role as $role){
+                           //找到角色
+                           $roles=$auth->getRole($role);
+                           //把当前用户追加到当前角色中
+                           $auth->assign($roles,$model->id);
+                       }
+                   }
                    \Yii::$app->session->setFlash("success","注册成功");
                    return $this->redirect(['admin']);
                }
             }
         }
-        return $this->render("add",['model'=>$model]);
+        //获取所有角色
+        $role=$auth->getRoles();
+        $role=ArrayHelper::map($role,'name','description');
+        return $this->render("add",['model'=>$model,'role'=>$role]);
     }
     /*
      * 用户修改
@@ -90,18 +105,44 @@ class AdminController extends \yii\web\Controller
     public function actionEdit($id){
         $model=Admin::findOne($id);
         $request=\Yii::$app->request;
+        //实例化rabc对象
+        $auth=\Yii::$app->authManager;
+        //找到所有的角色
+        $roles=$auth->getRolesByUser($id);
+        //取出所有数字值
+        $model->role=array_keys($roles);
         if($request->isPost){
             //数据绑定
             if($model->load($request->post())){
-                $model->password=\Yii::$app->security->generatePasswordHash($model->password);
-                if($model->validate()){
-                    $model->save();
-                    \Yii::$app->session->setFlash("success","修改成功");
-                    return $this->redirect(['admin']);
+                if($model->password){
+                    $model->password=\Yii::$app->security->generatePasswordHash($model->password);
+                    if($model->validate()){
+                        $model->save();
+                        //删除当前全部角色
+                        $auth->revokeAll($id);
+                        if($model->role){
+                                //循环添加角色
+                                foreach ($model->role as $role){
+                                    //找到角色
+                                    $roles=$auth->getRole($role);
+                                    //把当前用户追加到当前角色中
+                                    $auth->assign($roles,$model->id);
+                                }
+                        }
+                        \Yii::$app->session->setFlash("success","修改成功");
+                        return $this->redirect(['admin']);
+                    }
+                }else{
+                    \Yii::$app->session->setFlash("warning",'密码不能为空');
+                    return $this->refresh();
                 }
             }
         }
-        return $this->render("add",['model'=>$model]);
+        //得到当前用户所有的角色
+        $role=$auth->getRoles();
+        $role=ArrayHelper::map($role,'name','description');
+        $model->password="";
+        return $this->render("add",['model'=>$model,'role'=>$role]);
     }
     /*
      * 用户删除
@@ -109,6 +150,9 @@ class AdminController extends \yii\web\Controller
     public function actionDel($id)
     {
         $del=Admin::findOne($id);
+        $auth=\Yii::$app->authManager;
+        //删除所有角色
+        $auth->revokeAll($id);
         if($del){
             $del->delete();
             \Yii::$app->session->setFlash("success","删除成功");

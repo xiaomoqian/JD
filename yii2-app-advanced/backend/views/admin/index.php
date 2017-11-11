@@ -3,7 +3,7 @@
     <tr>
         <th style="text-align: center">用户ID</th>
         <th style="text-align: center">用户账号</th>
-        <th style="text-align: center">用户密码</th>
+        <th style="text-align: center">用户权限</th>
         <th style="text-align: center">用户邮箱</th>
         <th style="text-align: center">登录令牌</th>
         <th style="text-align: center">用户注册时间</th>
@@ -15,7 +15,22 @@
         <tr>
             <td><?=$admin->id?></td>
             <td><?=$admin->username?></td>
-            <td><?=substr($admin->password,0,20)?>....</td>
+            <td>
+                <?php
+                   $auth=Yii::$app->authManager;
+                   $role=$auth->getRolesByUser($admin->id);
+                   $s=array_keys($role);
+                   $count=count($s);
+                   foreach ($s as $k=>$v){
+                       if($k==$count-1){
+                           echo $v;
+                           break;
+                       }
+                       echo $v.",";
+                   }
+                ?>
+            </td>
+
             <td><?=$admin->email?></td>
             <td><?=substr($admin->token,0,20)?>....</td>
             <td><?=date("Y-m-d H:i:s",$admin->create_at)?></td>

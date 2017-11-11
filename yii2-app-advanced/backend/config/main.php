@@ -45,5 +45,9 @@ return [
             ],
         ],
     ],
+    'as rbac'=>[
+        'class'=>\backend\components\PermissionFilter::className(),
+//        'except' => 'login/index'
+    ],
     'params' => $params,
 ];
