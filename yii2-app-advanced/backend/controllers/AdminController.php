@@ -3,12 +3,37 @@
 namespace backend\controllers;
 
 use backend\models\Admin;
+use flyok666\qiniu\Qiniu;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\helpers\Url;
 
 class AdminController extends \yii\web\Controller
 {
+    /*
+     * 图片上传
+     */
+    public function actionUpload()
+    {
+        $config = [
+            'accessKey'=>'3QPn6N0S6AZeETy9Pn0gohcabRm7Mkasyf-uc7Yd',
+            'secretKey'=>'J68RwhjP6rufO7Wik33GnPVyAtFzsyLLa7x7Vvhx',
+            'domain'=>'http://oyw02vzfa.bkt.clouddn.com',
+            'bucket'=>'qianqian',
+            'area'=>Qiniu::AREA_HUANAN
+        ];
+        $qiniu = new Qiniu($config);
+        $key = time();
+        $qiniu->uploadFile($_FILES['file']['tmp_name'],$key);
+        $url = $qiniu->getLink($key);
+        $info=[
+            'code'=>0,
+            'url'=>$url,
+            'attachment'=>$url
+        ];
+        exit(Json::encode($info));
+    }
     /*
      * 用户登录
      */

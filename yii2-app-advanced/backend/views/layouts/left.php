@@ -5,7 +5,8 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src=<?=Yii::getAlias("@web")?>"/upload/brand/1509702857.jpg" class="img-circle" alt="User Image"/>
+<!--                <img src=--><?//=Yii::getAlias("@web")?><!--"/upload/brand/1509702857.jpg" class="img-circle" alt="User Image"/>-->
+                <img src="<?php echo  Yii::$app->user->identity->img?>" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
                 <p>
@@ -27,86 +28,34 @@
 <!--            </div>-->
 <!--        </form>-->
 <!--         /.search form-->
+        <?= dmstr\widgets\Menu::widget(
+            [
+                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
+                // 'items' =>  \backend\components\RbacMenu::Menu1(),
+                'items' => mdm\admin\components\MenuHelper::getAssignedMenu(Yii::$app->user->id,null, function($menu){
+                    $data = json_decode($menu['data'], true);
+                    $items = $menu['children'];
+                    $return = [
+                        'label' => $menu['name'],
+                        'url' => [$menu['route']],
+                    ];
+                    //处理我们的配置
+                    if ($data) {
+                        //visible
+                        isset($data['visible']) && $return['visible'] = $data['visible'];
+                        //icon
+                        isset($data['icon']) && $data['icon'] && $return['icon'] = $data['icon'];
+                        //other attribute e.g. class...
+                        $return['options'] = $data;
+                    }
+                    //没配置图标的显示默认图标，默认图标大家可以自己随便修改
+                    (!isset($return['icon']) || !$return['icon']) && $return['icon'] = 'circle-o';
+                    $items && $return['items'] = $items;
+                    return $return;
+                }),
+            ]
+        ) ?>
 
-        <?= dmstr\widgets\Menu::widget([
-            'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
-                'items' => [
-                    //商品管理
-                    [
-                        'label'=>'商品管理',
-                         'icon' => 'truck',
-                         'items'=>[
-                            ['label'=>'商品列表','icon' => 'imdb','url'=>['goods/index']],
-//                            ['label'=>'添加商品','url'=>['goods/add']],
-                            ['label'=>'分类列表','icon' => 'window-restore','url'=>['goods-category/index']],
-//                            ['label'=>'添加分类','url'=>['goods-category/add']],
-                            ['label'=>'品牌列表','icon' => 'cc-visa','url'=>['brand/index']],
-//                            ['label'=>'添加品牌','url'=>['brand/add']],
-                            ['label'=>'品牌回收站','icon' => 'trash','url'=>['brand/yin']],
-                        ]
-                    ],
-                    //文章管理
-                    [
-                        'label'=>'文章管理',
-                        'icon' => 'fa fa-address-card-o',
-                        'items'=>[
-                            ['label'=>'文章列表','icon' => 'fa fa-address-card','url'=>['article/index']],
-//                            ['label'=>'添加文章','url'=>['article/add']],
-                            ['label'=>'文章分类','icon' => 'fa fa-window-restore','url'=>['article/gory']],
-//                            ['label'=>'添加分类','url'=>['article/ga']],
-                        ]
-                    ],
-                    //用户管理
-                    [
-                        'label'=>'用户管理',
-                        'icon' => 'users',
-                        'items'=>[
-                            ['label'=>'管理员列表','icon' => 'user-o','url'=>['admin/admin']],
-//                            ['label'=>'管理员注册','icon' => 'user-plus','url'=>['admin/add']],
-                            ['label'=>'切换用户','icon' => 'reply-all','url'=>['admin/index']],
-                        ]
-                    ],
-                    [
-                        'label'=>'权限管理',
-                        'icon' => 'expeditedssl',
-                        'items'=>[
-                            ['label'=>'权限列表','icon' => 'exclamation-circle','url'=>['auth-item/index']],
-                            ['label'=>'角色列表','icon' => 'user-o','url'=>['auth-rule/index']],
-                        ]
-                    ],
-                    //项目完成，干掉
-                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
-                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
-                    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
-                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    [
-                        'label' => 'Same tools',
-                        'icon' => 'share',
-                        'url' => '#',
-                        'items' => [
-                            ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
-                            ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
-                            [
-                                'label' => 'Level One',
-                                'icon' => 'circle-o',
-                                'url' => '#',
-                                'items' => [
-                                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
-                                    [
-                                        'label' => 'Level Two',
-                                        'icon' => 'circle-o',
-                                        'url' => '#',
-                                        'items' => [
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-        ])?>
 
     </section>
 

@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use flyok666\qiniu\Qiniu;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -38,13 +39,13 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['password', 'email'], 'required'],
+            [['password','img', 'email'], 'required'],
             [['create_at', 'update_at'], 'integer'],
             [['username', 'password', 'email', 'token', 'login_ip'], 'string', 'max' => 255],
             [['salt'], 'string', 'max' => 6],
             [['email'],'email'],
             [['rememberMe'],'safe'],
-            [['role'],'safe']
+            [['role','img'],'safe'],
         ];
     }
 
@@ -64,8 +65,30 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
             'update_at' => '最后登录时间',
             'login_ip' => '最后登录地点',
             'rememberMe'=>'自动登录',
-            'role'=>"添加权限"
+            'role'=>"添加权限",
+            'img'=>'用户头像'
         ];
+    }
+    public function getImages(){
+        if(substr($this->logo,0,7)=="http://"){
+            return $this->logo;
+        }else{
+            return "@web/".$this->logo;
+        }
+    }
+    public function getDel($img,$key){
+        $qiniu=new Qiniu(
+            $config = [
+                'accessKey'=>'3QPn6N0S6AZeETy9Pn0gohcabRm7Mkasyf-uc7Yd',
+                'secretKey'=>'J68RwhjP6rufO7Wik33GnPVyAtFzsyLLa7x7Vvhx',
+                'domain'=>'http://oyw02vzfa.bkt.clouddn.com',
+                'bucket'=>$key,
+                'area'=>Qiniu::AREA_HUANAN
+            ]
+        );
+        $image=substr($img,-10);
+//        exit($img);
+        return $qiniu->delete($image,$key);
     }
     //注入系统内置时间行为
     public function behaviors()

@@ -233,7 +233,7 @@ use yii\helpers\Html;
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src=<?=Yii::getAlias("@web")?>"/upload/brand/1509702857.jpg" class="user-image" alt="User Image"/>
+                        <img src="<?php echo  Yii::$app->user->identity->img?>" class="user-image" alt="User Image"/>
                         <span class="hidden-xs"><?php echo  isset(Yii::$app->user->identity->username)?Yii::$app->user->identity->username:'游客' ?></span>
                     </a>
                     <ul class="dropdown-menu">

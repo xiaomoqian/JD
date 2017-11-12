@@ -5,7 +5,7 @@
         <th style="text-align: center">用户账号</th>
         <th style="text-align: center">用户权限</th>
         <th style="text-align: center">用户邮箱</th>
-        <th style="text-align: center">登录令牌</th>
+        <th style="text-align: center">用户头像</th>
         <th style="text-align: center">用户注册时间</th>
         <th style="text-align: center">最后登录时间</th>
         <th style="text-align: center">最后登录地址</th>
@@ -32,7 +32,7 @@
             </td>
 
             <td><?=$admin->email?></td>
-            <td><?=substr($admin->token,0,20)?>....</td>
+            <td><img src="<?=$admin->img?>" style="width: 100px;height: 50px"></td>
             <td><?=date("Y-m-d H:i:s",$admin->create_at)?></td>
             <td><?=date("Y-m-d H:i:s",$admin->update_at)?></td>
             <td><?=$admin->login_ip?></td>

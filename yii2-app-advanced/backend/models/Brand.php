@@ -20,8 +20,6 @@ class Brand extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    //定义一个文件上传
-//    public $imgFile;
     public static $paixu=['0'=>'隐藏','1'=>'显示'];
     public static function tableName()
     {

@@ -1,4 +1,4 @@
-<?=\yii\bootstrap\Html::a("添加权限",['add'],['class'=>'btn btn-success'])?>
+<?=\yii\bootstrap\Html::a("添加权限",['rbac/permission/create'],['class'=>'btn btn-success'])?>
 <table class="table table-hover table-striped table-bordered" style="text-align: center">
     <tr>
         <th style="text-align: center">权限名称</th>

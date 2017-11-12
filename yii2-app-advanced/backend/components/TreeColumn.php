@@ -71,7 +71,7 @@ class TreeColumn extends \yii\grid\ActionColumn {
                     'aria-label' => Yii::t('yii', 'Update'),
                     'data-pjax' => '0',
                 ], $this->buttonOptions);
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '/goods-category/edit?id='.$model->id, $options);
+                return Html::a('<span class="glyphicon glyphicon-pencil btn btn-info"></span>', '/goods-category/edit?id='.$model->id, $options);
             };
         }
         if (!isset($this->buttons['delete'])) {
@@ -83,7 +83,7 @@ class TreeColumn extends \yii\grid\ActionColumn {
                     'data-method' => 'post',
                     'data-pjax' => '0',
                 ], $this->buttonOptions);
-                return Html::a('<span class="glyphicon glyphicon-trash"></span>', '/goods-category/del?id='.$model->id, $options);
+                return Html::a('<span class="glyphicon glyphicon-trash btn btn-warning"></span>', '/goods-category/del?id='.$model->id, $options);
             };
         }
     }

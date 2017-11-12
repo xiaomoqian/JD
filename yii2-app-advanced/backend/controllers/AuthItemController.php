@@ -11,7 +11,7 @@ class AuthItemController extends \yii\web\Controller
     {
         $autManager=\Yii::$app->authManager;
         $count=AuthItem::find()->where(["type"=>2])->count();
-        $pageSize=5;
+        $pageSize=10;
         $page=new Pagination([
             'pageSize'=>$pageSize,
             'totalCount'=>$count
@@ -23,25 +23,25 @@ class AuthItemController extends \yii\web\Controller
     /*
      * 权限添加
      */
-    public function actionAdd()
-    {
-        $per=new AuthItem();
-        $request=\Yii::$app->request;
-        if($request->isPost){
-            if($per->load($request->post()) && $per->validate()){
-                $autManager=\Yii::$app->authManager;
-                //创建权限
-                $Permission=$autManager->createPermission($per->name);
-                //创建描述
-                $Permission->description=$per->description;
-                //添加到数据库
-                $autManager->add($Permission);
-                \Yii::$app->session->setFlash("success",'添加'.$Permission->description."成功");
-                return $this->redirect(['index']);
-            }
-        }
-        return $this->render("add",compact("per"));
-    }
+//    public function actionAdd()
+//    {
+//        $per=new AuthItem();
+//        $request=\Yii::$app->request;
+//        if($request->isPost){
+//            if($per->load($request->post()) && $per->validate()){
+//                $autManager=\Yii::$app->authManager;
+//                //创建权限
+//                $Permission=$autManager->createPermission($per->name);
+//                //创建描述
+//                $Permission->description=$per->description;
+//                //添加到数据库
+//                $autManager->add($Permission);
+//                \Yii::$app->session->setFlash("success",'添加'.$Permission->description."成功");
+//                return $this->redirect(['index']);
+//            }
+//        }
+//        return $this->render("add",compact("per"));
+//    }
     /*
      * 权限修改
      */
