@@ -35,7 +35,7 @@ class AdminController extends \yii\web\Controller
         exit(Json::encode($info));
     }
     /*
-     * 用户登录
+     * 切换用户
      */
     public function actionIndex()
     {
@@ -57,7 +57,7 @@ class AdminController extends \yii\web\Controller
                     }else{
                         \Yii::$app->user->login($admin,3600*24*7);
                     }
-                    return $this->redirect(['admin']);
+                    return $this->redirect(['test/index']);
                 }else{
                     $model->addError('password','密码错误');
                 }
@@ -169,6 +169,30 @@ class AdminController extends \yii\web\Controller
         $model->password="";
         return $this->render("add",['model'=>$model,'role'=>$role]);
     }
+    /*
+     * 修改个人信息
+     */
+    public function actionEdit1($id)
+     {
+         $model=Admin::findOne($id);
+         $request=\Yii::$app->request;
+         if($request->isPost){
+             $password=$request->post();
+             if(\Yii::$app->security->validatePassword($password["Admin"]["password"],$model->password)){
+                 echo "<script>alert('新密码不能与旧密码一致');window.location.href ='edit1?id={$model->id}'</script>";
+                 exit;
+             }
+              $pw=\Yii::$app->security->generatePasswordHash($password["Admin"]["password"]);
+             $model->password=$pw;
+             $model->username=$password["Admin"]["username"];
+             $model->save();
+             \Yii::$app->session->setFlash("success","修改成功");
+             return $this->redirect(['test/index']);
+         }
+         $model->password="";
+         return $this->render('edit',compact('model'));
+     }
+
     /*
      * 用户删除
      */

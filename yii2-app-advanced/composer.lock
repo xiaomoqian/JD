@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e65b987f422231f092d30292ee97f79f",
+    "content-hash": "938cf6d25ed307b2c7aae76443127853",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -1071,6 +1071,43 @@
             "time": "2017-01-11T14:05:47+00:00"
         },
         {
+            "name": "sinkcup/aliyun-sms",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sinkcup/aliyun-sms-php-sdk-composer.git",
+                "reference": "b1e0230e8ac06dd0a402468077d5e2bb7d94b002"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/sinkcup/aliyun-sms-php-sdk-composer/b1e0230e8ac06dd0a402468077d5e2bb7d94b002.zip",
+                "reference": "b1e0230e8ac06dd0a402468077d5e2bb7d94b002",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Aliyun\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sinkcup",
+                    "homepage": "https://github.com/sinkcup",
+                    "role": "Developer"
+                }
+            ],
+            "description": "阿里云短信服务PHP SDK composer版",
+            "time": "2016-10-16T09:41:46+00:00"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.0.2",
             "source": {
@@ -1508,6 +1545,7 @@
                 "yii2",
                 "yii2-attachment"
             ],
+            "abandoned": "yuncms/yuncms-attachment",
             "time": "2017-10-14T06:28:19+00:00"
         },
         {

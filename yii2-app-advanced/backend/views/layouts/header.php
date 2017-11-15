@@ -7,15 +7,15 @@ use yii\helpers\Html;
 
 <header class="main-header">
 
-    <?= Html::a('<span class="logo-mini">今夕</span><span class="logo-lg">' ."今夕商城" . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+    <?= Html::a('<span class="logo-mini">今夕</span><span class="logo-lg">' ."今夕商城" . '</span>', ['test/index'], ['class' => 'logo','style'=>"background-color: #1c2d3f"]) ?>
 
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top" role="navigation" style="background-color: #1c2d3f">
 
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" >
             <span class="sr-only">Toggle navigation</span>
         </a>
 
-        <div class="navbar-custom-menu">
+        <div class="navbar-custom-menu"  style="background-color: #1c2d3f">
 
             <ul class="nav navbar-nav">
 
@@ -152,7 +152,7 @@ use yii\helpers\Html;
 
 
                     <!--退出登录-->
-                    <a href="<?php echo  \yii\helpers\Url::to(['login/out'])?>" class="btn btn-primary">退出登录</a>
+<!--                    <a href="--><?php //echo  \yii\helpers\Url::to(['login/out'])?><!--" class="btn btn-primary">退出登录</a>-->
                     <ul class="dropdown-menu">
                         <li class="header">You have 9 tasks</li>
                         <li>
@@ -239,30 +239,40 @@ use yii\helpers\Html;
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
+                            <img src="<?php echo  Yii::$app->user->identity->img?>" class="img-circle"
                                  alt="User Image"/>
 
                             <p>
-                                亚力山大-小莫- 商城开发者
-                                <small>自2017年十一月日起</small>
+                                梦行者-(<?php  $model= \Yii::$app->authManager;
+                                $name=$model->getRolesByUser(\Yii::$app->user->identity->id);
+                                $a=array_keys($name);
+                                echo $a[0];?>)-梦想成都
+<!--                                <small>自2017年十一月日起</small>-->
+                                <small><?php echo date("Y-m-d",time());?>日起</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">
-                            <div class="col-xs-4 text-center">
-                                <a href="#">追随者</a>
+<!--                            <div class="col-xs-4 text-center">-->
+<!--                                <a href="#">邮箱--><?php //echo  Yii::$app->user->identity->email?><!--</a>-->
+<!--                            </div>-->
+                            <div class="col-xs-6 text-center">
+                                <a href="#">登录时间<br/><?php echo  date("m月d日",Yii::$app->user->identity->update_at)?></a>
                             </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">销售额</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">六人行</a>
+                            <div class="col-xs-6 text-center">
+                                <a href="#">最后登录地点
+                                    <?=Yii::$app->user->identity->login_ip?></a>
                             </div>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">简况</a>
+                                <?= Html::a(
+                                    '修改密码',
+                                    ['admin/edit1','id'=>Yii::$app->user->identity->id],
+                                    [ 'class' => 'btn btn-default btn-flat']
+
+                                ) ?>
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(

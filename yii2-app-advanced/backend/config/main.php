@@ -17,12 +17,14 @@ return [
 //            'layout' => 'left-menu' //模块修改
         ]
     ],
+    //所有权限
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
 //            'rbac/*',
             'login/index',
-            'login/out'
+            'login/out',
+            'admin/edit1'
         ]
     ],
     'components' => [

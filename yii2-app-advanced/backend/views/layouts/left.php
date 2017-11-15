@@ -1,6 +1,6 @@
-<aside class="main-sidebar">
+<aside class="main-sidebar"  >
 
-    <section class="sidebar">
+    <section class="sidebar" >
 
         <!-- Sidebar user panel -->
         <div class="user-panel">
@@ -13,7 +13,7 @@
                     <?php echo  isset(Yii::$app->user->identity->username)?Yii::$app->user->identity->username:'游客'?>
                 </p>
 
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <a href="#"><i class="fa fa-circle text-success"></i>在线</a>
             </div>
         </div>
 
