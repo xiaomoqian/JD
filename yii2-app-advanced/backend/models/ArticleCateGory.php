@@ -54,4 +54,5 @@ class ArticleCateGory extends \yii\db\ActiveRecord
             'is_htlp' => '辅助相分类',
         ];
     }
+
 }

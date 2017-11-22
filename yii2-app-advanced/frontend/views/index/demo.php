@@ -1,0 +1,1 @@
+<img src="<?= \yii\helpers\Url::to(['index/pay','orderId'=>5])?>" />

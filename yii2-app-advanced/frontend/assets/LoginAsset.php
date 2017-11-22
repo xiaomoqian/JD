@@ -24,8 +24,15 @@ class LoginAsset extends AssetBundle
         "style/header.css" ,
         "style/login.css" ,
         "style/footer.css" ,
+
+        "style/index.css" ,
+        "style/bottomnav.css" ,
+        "style/footer.css" ,
     ];
     public $js = [
+            "js/jquery-1.8.3.min.js",
+            "js/header.js",
+            "js/index.js",
     ];
     public $depends = [
         'yii\web\YiiAsset',
